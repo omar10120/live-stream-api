@@ -1,0 +1,205 @@
+{
+  "info": {
+    "_postman_id": "noejs-api-collection-001",
+    "name": "noejs-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "http://localhost:3000/auth/register", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["auth", "register"]},
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"username\": \"user1\"\n}"}
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "http://localhost:3000/auth/login", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["auth", "login"]},
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"}
+          }
+        },
+        {
+          "name": "Social Login",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "http://localhost:3000/auth/social", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["auth", "social"]},
+            "body": {"mode": "raw", "raw": "{\n  \"provider\": \"google\",\n  \"providerId\": \"google-id-123\",\n  \"email\": \"user@example.com\",\n  \"username\": \"user1\",\n  \"avatar\": \"https://example.com/avatar.png\"\n}"}
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{jwt}}"}],
+            "url": {"raw": "http://localhost:3000/auth/me", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["auth", "me"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/user/{{userId}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["user", "{{userId}}"]}
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Authorization", "value": "Bearer {{jwt}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "http://localhost:3000/user/{{userId}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["user", "{{userId}}"]},
+            "body": {"mode": "raw", "raw": "{\n  \"username\": \"newname\",\n  \"avatar\": \"https://example.com/avatar.png\",\n  \"bio\": \"Hello!\",\n  \"fcmToken\": \"token123\"\n}"}
+          }
+        },
+        {
+          "name": "Follow User",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{jwt}}"}],
+            "url": {"raw": "http://localhost:3000/user/{{userId}}/follow", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["user", "{{userId}}", "follow"]}
+          }
+        },
+        {
+          "name": "Unfollow User",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{jwt}}"}],
+            "url": {"raw": "http://localhost:3000/user/{{userId}}/unfollow", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["user", "{{userId}}", "unfollow"]}
+          }
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/user/search?q={{query}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["user", "search"], "query": [{"key": "q", "value": "{{query}}"}]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stream",
+      "item": [
+        {
+          "name": "Create Stream",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{jwt}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "http://localhost:3000/stream/create", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["stream", "create"]},
+            "body": {"mode": "raw", "raw": "{\n  \"title\": \"My Live Stream\",\n  \"category\": \"{{categoryId}}\",\n  \"tags\": [\"game\", \"fun\"],\n  \"type\": \"Game\",\n  \"thumbnail\": \"https://example.com/thumb.jpg\"\n}"}
+          }
+        },
+        {
+          "name": "End Stream",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{jwt}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "http://localhost:3000/stream/end", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["stream", "end"]},
+            "body": {"mode": "raw", "raw": "{\n  \"streamId\": \"{{streamId}}\"\n}"}
+          }
+        },
+        {
+          "name": "List Streams",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/stream/list", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["stream", "list"]}
+          }
+        },
+        {
+          "name": "View Stream",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/stream/{{streamId}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["stream", "{{streamId}}"]}
+          }
+        },
+        {
+          "name": "Trending Streams",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/stream/trending", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["stream", "trending"]}
+          }
+        },
+        {
+          "name": "Search Streams",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/stream/search?q={{query}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["stream", "search"], "query": [{"key": "q", "value": "{{query}}"}]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Message",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{jwt}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "http://localhost:3000/message/send", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["message", "send"]},
+            "body": {"mode": "raw", "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"content\": \"Hello!\",\n  \"type\": \"text\"\n}"}
+          }
+        },
+        {
+          "name": "List Messages",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/message/{{streamId}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["message", "{{streamId}}"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/category/list", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["category", "list"]}
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{jwt}}"}, {"key": "Content-Type", "value": "application/json"}],
+            "url": {"raw": "http://localhost:3000/category/create", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["category", "create"]},
+            "body": {"mode": "raw", "raw": "{\n  \"name\": \"Popular\",\n  \"icon\": \"🔥\",\n  \"order\": 1\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Follow",
+      "item": [
+        {
+          "name": "Get Followers",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/follow/{{userId}}/followers", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["follow", "{{userId}}", "followers"]}
+          }
+        },
+        {
+          "name": "Get Following",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "http://localhost:3000/follow/{{userId}}/following", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["follow", "{{userId}}", "following"]}
+          }
+        }
+      ]
+    }
+  ]
+} 
