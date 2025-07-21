@@ -3,120 +3,274 @@
     "_postman_id": "noejs-api-socketio-collection-001",
     "name": "noejs-api Socket.IO",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Socket.IO event testing for live streaming app. Includes join_stream, leave_stream, send_message, stream_status events."
+    "description": "Socket.IO event testing for live streaming app. Includes chat, viewer events, and WebRTC signaling events."
   },
   "item": [
     {
-      "name": "Join Stream",
-      "event": [
+      "name": "Chat & Viewer Events",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "// Listen for viewer_count updates",
-              "pm.socketio.listen('viewer_count', (data) => {",
-              "  console.log('Viewer count:', data);",
-              "});"
-            ],
-            "type": "text/javascript"
+          "name": "Join Stream",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for viewer_count updates",
+                  "pm.socketio.listen('viewer_count', (data) => {",
+                  "  console.log('Viewer count:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\"\n}",
+              "options": {
+                "event": "join_stream"
+              }
+            }
+          }
+        },
+        {
+          "name": "Leave Stream",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for viewer_count updates",
+                  "pm.socketio.listen('viewer_count', (data) => {",
+                  "  console.log('Viewer count:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\"\n}",
+              "options": {
+                "event": "leave_stream"
+              }
+            }
+          }
+        },
+        {
+          "name": "Send Message",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for new_message events",
+                  "pm.socketio.listen('new_message', (data) => {",
+                  "  console.log('New message:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\",\n  \"content\": \"Hello from Postman!\"\n}",
+              "options": {
+                "event": "send_message"
+              }
+            }
+          }
+        },
+        {
+          "name": "Stream Status Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for stream_status events",
+                  "pm.socketio.listen('stream_status', (data) => {",
+                  "  console.log('Stream status:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"status\": \"start\"\n}",
+              "options": {
+                "event": "stream_status"
+              }
+            }
           }
         }
-      ],
-      "request": {
-        "url": "ws://localhost:3000",
-        "method": "socketio",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\"\n}",
-          "options": {
-            "event": "join_stream"
-          }
-        }
-      }
+      ]
     },
     {
-      "name": "Leave Stream",
-      "event": [
+      "name": "WebRTC Signaling Events",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "// Listen for viewer_count updates",
-              "pm.socketio.listen('viewer_count', (data) => {",
-              "  console.log('Viewer count:', data);",
-              "});"
-            ],
-            "type": "text/javascript"
+          "name": "Broadcaster: Send Stream Offer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for offer-stored confirmation",
+                  "pm.socketio.listen('offer-stored', (data) => {",
+                  "  console.log('Offer stored:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"sdp\": \"v=0\\r\\no=- 1234567890 2 IN IP4 127.0.0.1\\r\\ns=-\\r\\nt=0 0\\r\\na=group:BUNDLE 0\\r\\na=msid-semantic: WMS\\r\\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\\r\\nc=IN IP4 0.0.0.0\\r\\na=ice-ufrag:test\\r\\na=ice-pwd:test\\r\\na=ice-options:trickle\\r\\na=fingerprint:sha-256 test\\r\\na=setup:actpass\\r\\na=mid:0\\r\\na=sctp-port:5000\\r\\na=max-message-size:262144\\r\\n\",\n  \"type\": \"offer\"\n}",
+              "options": {
+                "event": "stream_offer"
+              }
+            }
           }
-        }
-      ],
-      "request": {
-        "url": "ws://localhost:3000",
-        "method": "socketio",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\"\n}",
-          "options": {
-            "event": "leave_stream"
-          }
-        }
-      }
-    },
-    {
-      "name": "Send Message",
-      "event": [
+        },
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "// Listen for new_message events",
-              "pm.socketio.listen('new_message', (data) => {",
-              "  console.log('New message:', data);",
-              "});"
-            ],
-            "type": "text/javascript"
+          "name": "Viewer: Join Stream (Get Offer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for stream_offer from broadcaster",
+                  "pm.socketio.listen('stream_offer', (data) => {",
+                  "  console.log('Received offer:', data);",
+                  "});",
+                  "// Listen for viewer_count updates",
+                  "pm.socketio.listen('viewer_count', (data) => {",
+                  "  console.log('Viewer count:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\"\n}",
+              "options": {
+                "event": "join_stream"
+              }
+            }
           }
-        }
-      ],
-      "request": {
-        "url": "ws://localhost:3000",
-        "method": "socketio",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\",\n  \"content\": \"Hello from Postman!\"\n}",
-          "options": {
-            "event": "send_message"
-          }
-        }
-      }
-    },
-    {
-      "name": "Stream Status Update",
-      "event": [
+        },
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "// Listen for stream_status events",
-              "pm.socketio.listen('stream_status', (data) => {",
-              "  console.log('Stream status:', data);",
-              "});"
-            ],
-            "type": "text/javascript"
+          "name": "Viewer: Send Stream Answer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for any errors",
+                  "pm.socketio.listen('error', (data) => {",
+                  "  console.log('Error:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\",\n  \"sdp\": \"v=0\\r\\no=- 1234567890 2 IN IP4 127.0.0.1\\r\\ns=-\\r\\nt=0 0\\r\\na=group:BUNDLE 0\\r\\na=msid-semantic: WMS\\r\\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\\r\\nc=IN IP4 0.0.0.0\\r\\na=ice-ufrag:test\\r\\na=ice-pwd:test\\r\\na=ice-options:trickle\\r\\na=fingerprint:sha-256 test\\r\\na=setup:passive\\r\\na=mid:0\\r\\na=sctp-port:5000\\r\\na=max-message-size:262144\\r\\n\",\n  \"type\": \"answer\"\n}",
+              "options": {
+                "event": "stream_answer"
+              }
+            }
+          }
+        },
+        {
+          "name": "Broadcaster: Listen for Stream Answer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for stream_answer from viewer",
+                  "pm.socketio.listen('stream_answer', (data) => {",
+                  "  console.log('Received answer:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\"\n}",
+              "options": {
+                "event": "join_stream"
+              }
+            }
+          }
+        },
+        {
+          "name": "Send ICE Candidate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Listen for ice_candidate from other peer",
+                  "pm.socketio.listen('ice_candidate', (data) => {",
+                  "  console.log('Received ICE candidate:', data);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "url": "ws://localhost:3000",
+            "method": "socketio",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"userId\": \"{{userId}}\",\n  \"candidate\": \"candidate:1 1 UDP 2122252543 192.168.1.1 12345 typ host\"\n}",
+              "options": {
+                "event": "ice_candidate"
+              }
+            }
           }
         }
-      ],
-      "request": {
-        "url": "ws://localhost:3000",
-        "method": "socketio",
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"streamId\": \"{{streamId}}\",\n  \"status\": \"start\"\n}",
-          "options": {
-            "event": "stream_status"
-          }
-        }
-      }
+      ]
     }
   ],
   "variable": [
